@@ -2,15 +2,17 @@
 ###       MYSQL VM       ###
 ############################
 
-# This script is used to backup the active MySQL Database to the Backup Server Copy specified in the variables. It works by taking a dump of the MySQL DB including all databases and sent directly to an NFS Share exposed by the Backup Server. 
+# This script is used to backup the active MySQL Database to the Backup Server Copy specified in the variables. It works by taking a dump of the MySQL DB including all databases and sent directly to the backup server through an SSH connection after compression.
 
 # Set Variables. SET ALL VARIABLES BEFORE USE
 BACKUP_SERVER=""
-MOUNT_DIR=""
-SUB_DIR=""
+BACKUP_SERVER_USER=""
+BACKUP_SERVER_PATH=""
+SSH_PASSWORD=""
 MAILGUN_API_KEY=""
 ALERT_EMAIL=""
 DUMP_PASSWORD=""
+
 
 # Check to see if Backup Server is online. If not, exit the script because there is no point in running it.
 ping -q -c5 $BACKUP_SERVER > /dev/null
@@ -25,15 +27,5 @@ then
 	exit
 fi
 
-# Mount the Backup Server using NFS
-if [ ! -d "$MOUNT_DIR" ]; then
-  mkdir $MOUNT_DIR
-fi
-mount "$BACKUP_SERVER"/"$SUB_MOUNT" $MOUNT_DIR
-
 # Create the MySQL Database Dump
-mysqldump -u root -p$DUMP_PASSWORD --all-databases > $MOUNT_DIR/sql_dump.sql
-mysqld --help --verbose > $MOUNT_DIR/conf.txt
-
-# Unmount the NFS Share
-umount $MOUNT_DIR
+mysqldump -u root -p$DUMP_PASSWORD --all-databases | sshpass -p "$SSH_PASSWORD" ssh $BACKUP_SERVER_USER@$BACKUP_SERVER "cat > $BACKUP_SERVER_PATH/mysql/mysqlserver.sql"
