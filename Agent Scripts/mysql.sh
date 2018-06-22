@@ -1,5 +1,5 @@
 ############################
-###       MYSQL VM       ###
+###      MYSQL SCRIPT    ###
 ############################
 
 # This script is used to backup the active MySQL Database to the Backup Server Copy specified in the variables. It works by taking a dump of the MySQL DB including all databases and sent directly to the backup server through an SSH connection after compression.
