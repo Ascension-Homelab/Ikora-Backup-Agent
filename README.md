@@ -49,3 +49,5 @@ Backup is done to Google Drive with unlimited storage using rclone in this curre
 2. Add Google Drive as a remote, possibly using new OAuth credentials
 3. Add `crypt` as a remote since backups are encrypted, using same passphrase and blank salt
 4. Sync rclone copy to local from the `crypt` remote
+
+Consult (this link)[https://gist.github.com/briantkatch/95b159ed5ba7e1d5d85d74c6e4b04dea] for a more detailed documentation on backing up and restoring using rclone (6/22/18). 
