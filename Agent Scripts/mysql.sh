@@ -10,10 +10,10 @@ BACKUP_SERVER_USER="" # Username for the backup server login
 BACKUP_SERVER_PATH="" # Path at the destination, including the final folder name (/path/to/dir/server)
 SSH_PASSWORD="" # SSH Password because ssh keys do not work for this
 MAILGUN_API_KEY="" # API Key for Mailgun -> api:key-<THIS PART>
+MAILGUN_DOMAIN="" # The domain name for emails (i.e. example.com)
 ALERT_EMAIL="" # Email Address to receive backup alerts
 DUMP_PASSWORD="" # Password to encrypt the MySQL dump with
 SERVER_NAME="" # Canonical name for the server to be used in emails
-MAILGUN_DOMAIN=""
 
 # Check to see if Backup Server is online. If not, exit the script because there is no point in running it.
 ping -q -c5 $BACKUP_SERVER > /dev/null
