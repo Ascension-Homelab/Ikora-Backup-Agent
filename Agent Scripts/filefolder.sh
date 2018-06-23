@@ -29,6 +29,7 @@ then
 fi
 
 # Import a list of folder locations and associated excludes and puts them into an associative array
+# Sourced from https://stackoverflow.com/questions/33605617/how-to-parse-a-text-file-using-shell
 declare -A FileList
 while IFS== read var val ;do
     [[ "$var" =~ ^[A-Za-z0-9_/]*$ ]] && FileList[$var]=$val # Note that paths with spaces will not work properly. Probably. Haven't tested
