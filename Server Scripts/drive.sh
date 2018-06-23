@@ -8,7 +8,7 @@
 BACKUP_LOCATION=""
 CRYPT_REMOTE_NAME=""
 
-if pgrep -x "rclone" > /dev/null`
+if pgrep -x "rclone" > /dev/null
 then
     exit
 else
