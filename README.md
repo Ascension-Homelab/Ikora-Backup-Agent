@@ -31,3 +31,21 @@ As noted earlier, the File/Folder task takes a filelist as a secondary configura
 ```
 
 Note that each line represents an individual `rsync` task. The first parameter will be used as the source for `rsync` so `rsync` will attempt to transfer that directory. The second parameter is the exclude file, a plaintext file that `rsync` will reference. An exclude file is required for every source path, even if one is not needed, in which a blank file can be used. The exclude file should consist of paths or regex for folders or files to exclude from the backup process.
+
+## Backing Up
+
+Backup is done to Google Drive with unlimited storage using rclone in this current setup. 
+
+### Configuration
+
+1. Download rclone 
+2. Add Google Drive as a remote, possibly using new OAuth credentials
+3. Add `crypt` as a remote since backups are encrypted
+4. `rclone -L copy /path/to/backups <name of crypt remote>:`
+
+## Restoring
+
+1. Download rclone
+2. Add Google Drive as a remote, possibly using new OAuth credentials
+3. Add `crypt` as a remote since backups are encrypted, using same passphrase and blank salt
+4. Sync rclone copy to local from the `crypt` remote
