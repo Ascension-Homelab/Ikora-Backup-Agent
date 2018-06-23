@@ -13,14 +13,15 @@ MAILGUN_API_KEY="" # API Key for Mailgun -> api:key-<THIS PART>
 ALERT_EMAIL="" # Email Address to receive backup alerts
 DUMP_PASSWORD="" # Password to encrypt the MySQL dump with
 SERVER_NAME="" # Canonical name for the server to be used in emails
+MAILGUN_DOMAIN=""
 
 # Check to see if Backup Server is online. If not, exit the script because there is no point in running it.
 ping -q -c5 $BACKUP_SERVER > /dev/null
 if [ $? -ne 0 ]
 then
     curl -s --user "api:key-$MAILGUN_API_KEY" \ # Send using MailGun.
-            https://api.mailgun.net/v3/mailgun.felixjen.com/messages \
-            -F from='Ikora Alert <ikora@felixjen.com>' \
+            https://api.mailgun.net/v3/mailgun."$MAILGUN_DOMAIN"/messages \
+            -F from="Ikora Alert <ikora@$MAILGUN_DOMAIN>" \
             -F to="$ALERT_EMAIL" \
             -F subject="Ikora: $SERVER_NAME Backup Failed" \
             -F text="This is an emergency alert from Ikora. The $SERVER_NAME scheduled backup has failed because the backup server is unreachable."

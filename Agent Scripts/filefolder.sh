@@ -10,6 +10,7 @@ BACKUP_SERVER_USER="" # Username for the backup server login
 BACKUP_SERVER_PATH="" # Path at the destination, including the final folder name (/path/to/dir/server)
 SSH_PASSWORD="" 
 MAILGUN_API_KEY="" # API Key for Mailgun -> api:key-<THIS PART>
+MAILGUN_DOMAIN=""
 ALERT_EMAIL="" # Email Address to receive backup alerts
 FILE_LIST="" # Absolute path to the filelist. See README for filelist format
 SERVER_NAME="" # Canonical name for the server to be used in emails
@@ -20,8 +21,8 @@ ping -q -c5 $BACKUP_SERVER > /dev/null
 if [ $? -ne 0 ]
 then
     curl -s --user "api:key-$MAILGUN_API_KEY" \ # Send using MailGun.
-            https://api.mailgun.net/v3/mailgun.felixjen.com/messages \
-            -F from='Ikora Alert <ikora@felixjen.com>' \
+            https://api.mailgun.net/v3/mailgun."$MAILGUN_DOMAIN"/messages \
+            -F from="Ikora Alert <ikora@$MAILGUN_DOMAIN>" \
             -F to="$ALERT_EMAIL" \
             -F subject="Ikora: $SERVER_NAME Backup Failed" \
             -F text="This is an emergency alert from Ikora. The $SERVER_NAME scheduled backup has failed because the backup server is unreachable."
