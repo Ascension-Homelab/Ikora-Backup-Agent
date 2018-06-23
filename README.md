@@ -1,20 +1,9 @@
 # Ikora-Backup-Agent
 Agent for the Ikora Backup System developed for the Ascension Homelab
 
-## Requirements
-1. Check to see if there exists a configuration file
-2. If there is a file, proceed to stage **Backup**
-3. If there is not a file, prompt about creation of the file or quit
-4. Create the file and ask for destination Server IP
-5. Close the program and tell user to modify the file as necessary
-**Backup**
-1. Define multiple backup types (MySQL,File/Folder,Shell Output, etc...)
-2. Based on the configuration file which defines the backup types, perform the correct action
-3. Either store directly into the local, or send immediately to destination server into the specified directory
-
 ## Tasks
 
-Tasks are defined 
+Tasks are defined by a general set of scripts which take configuration options as either variables or as a secondary configuration file. 
 
 ### MySQL
 
@@ -22,4 +11,22 @@ The MySQL task will take a dump of all MySQL Databases and store the file into a
 
 ### File/Folder
 
-The File/Folder task takes in an array of folders to be backed up. The script perform an immediate rsync of files 
+#### About
+
+The File/Folder task is designed to make a carbon copy of a list of folders and all files inside to a remote backup destination using rsync. The task first checks the availability of the backup server (through ping). Assuming the server is available, it parses a secondary configuration file (described below) into an associative array of folders and excludes. The task then iterates over the entire associative arrow, noting the *key* and *value* from the associative array. The *key* is passed to `rsync` as the folder source and the *value* is passed as the location of an exclude file. `rsync` uses SSH to transfer the files to the remote server.
+
+#### Configuration Steps
+
+1. Create a filelist.txt file
+2. Generate and copy SSH keys to the remote server
+
+#### FileList
+
+As noted earlier, the File/Folder task takes a filelist as a secondary configuration file. The filelist is in the format of:
+
+```
+/path/to/source/dir=/path/to/exclude/file
+/path/to/source/dir2=/path/to/exclude/file2
+```
+
+Note that each line represents an individual `rsync` task. The first parameter will be used as the source for `rsync` so `rsync` will attempt to transfer that directory. The second parameter is the exclude file, a plaintext file that `rsync` will reference. An exclude file is required for every source path, even if one is not needed, in which a blank file can be used. The exclude file should consist of paths or regex for folders or files to exclude from the backup process.

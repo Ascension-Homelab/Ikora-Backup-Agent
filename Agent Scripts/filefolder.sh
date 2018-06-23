@@ -5,14 +5,14 @@
 # This script takes a list of files and folders to be copied to the backup server. This is a generic script and it is up to the user to configure the list of files and folders as appropriate to the use case. This script takes advantage of rsync's delta copy to save on bandwidth and time.
 
 # Set Variables. SET ALL VARIABLES BEFORE USE
-BACKUP_SERVER=""
-BACKUP_SERVER_USER=""
-BACKUP_SERVER_PATH=""
-SSH_PASSWORD=""
-MAILGUN_API_KEY=""
-ALERT_EMAIL=""
-FILE_LIST=""
-SERVER_NAME=""
+BACKUP_SERVER="" # IP address of the backup server
+BACKUP_SERVER_USER="" # Username for the backup server login
+BACKUP_SERVER_PATH="" # Path at the destination, including the final folder name (/path/to/dir/server)
+SSH_PASSWORD="" 
+MAILGUN_API_KEY="" # API Key for Mailgun -> api:key-<THIS PART>
+ALERT_EMAIL="" # Email Address to receive backup alerts
+FILE_LIST="" # Absolute path to the filelist. See README for filelist format
+SERVER_NAME="" # Canonical name for the server to be used in emails
 
 
 # Check to see if Backup Server is online. If not, exit the script because there is no point in running it.
